@@ -1,9 +1,10 @@
 ﻿using HarmonogramyWebAPI.DbInitializer;
+using HarmonogramyWebAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HarmonogramyWebAPI.Models;
 
-public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options), IContext
 {
     public DbSet<User>? Users { get; set; }
     public DbSet<Company>? Companies { get; set; }

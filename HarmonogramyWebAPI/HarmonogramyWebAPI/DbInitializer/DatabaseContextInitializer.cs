@@ -3,7 +3,7 @@ using HarmonogramyWebAPI.Models;
 
 namespace HarmonogramyWebAPI.DbInitializer;
 
-public class DatabaseContextInitializer(IContext context)
+public class DatabaseContextInitializer(IContext context, IConfiguration configuration)
 {
     public async Task Run()
     {
@@ -28,6 +28,8 @@ public class DatabaseContextInitializer(IContext context)
         {
             context.Positions.Add(new Position { PositionName = "Test" });
         }
+        
+        await context.SaveChangesAsync();
 
         if (!context.Users.Any())
         {
@@ -35,18 +37,19 @@ public class DatabaseContextInitializer(IContext context)
             {
                 FirstName = "Test",
                 LastName = "Test",
-                Email = Environment.GetEnvironmentVariable("FirstSuperuserEmail")!,
-                Password = Security.GetPasswordHash(Environment.GetEnvironmentVariable("FirstSuperuserPassword")!),
+                Email = configuration["AppSettings:FirstSuperuserEmail"]!,
+                Password =
+                    Security.GetPasswordHash(configuration, configuration["AppSettings:FirstSuperuserPassword"]!),
                 IsActive = true,
                 IsSuperUser = true,
                 IsEmpoyed = true,
                 DateOfEmployment = DateOnly.FromDateTime(DateTime.Now),
-                CompanyId = context.Companies.FirstOrDefault()?.Id,
-                EmploymentId = context.Employments.FirstOrDefault()?.Id,
-                PositionId = context.Positions.FirstOrDefault()?.Id
+                CompanyId = context.Companies.FirstOrDefault(x => x.CompanyName == "Test")?.Id,
+                EmploymentId = context.Employments.FirstOrDefault(x => x.EmploymentName == "Test")?.Id,
+                PositionId = context.Positions.FirstOrDefault(x => x.PositionName == "Test")?.Id
             });
         }
-        
+
         await context.SaveChangesAsync();
     }
 }

@@ -8,10 +8,10 @@ public class Security
     private static int keySize = 64;
     private static int iterations = 350000;
     private static HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA512;
-    
-    public static string GetPasswordHash(string password)
+
+    public static string GetPasswordHash(IConfiguration configuration, string password)
     {
-        var salt = Environment.GetEnvironmentVariable("Salt")!;
+        var salt = configuration["AppSettings:Salt"]!;
         var saltBytes = Encoding.UTF8.GetBytes(salt);
         
         var hash = Rfc2898DeriveBytes.Pbkdf2(
@@ -24,9 +24,9 @@ public class Security
         return Convert.ToHexString(hash);
     }
     
-    public static bool VerifyPassword(string password, string hash)
+    public static bool VerifyPassword(IConfiguration configuration, string password, string hash)
     {
-        var salt = Environment.GetEnvironmentVariable("Salt")!;
+        var salt = configuration["AppSettings:Salt"]!;
         var saltBytes = Encoding.UTF8.GetBytes(salt);
         var hashToCompare = Rfc2898DeriveBytes
             .Pbkdf2(password, saltBytes, iterations, hashAlgorithm, keySize);
