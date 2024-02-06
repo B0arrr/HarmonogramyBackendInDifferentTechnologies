@@ -6,5 +6,5 @@ using HarmonogramyWebAPI.Models;
 
 namespace HarmonogramyWebAPI.Services;
 
-public class CompanyService(IContext dbContext, IMapper mapper)
-    : GenericCrudService<Company, CompanyDto>(dbContext, mapper);
+public class ScheduleService(IContext dbContext, IMapper mapper)
+    : GenericCrudService<Schedule, ScheduleDto>(dbContext, mapper);

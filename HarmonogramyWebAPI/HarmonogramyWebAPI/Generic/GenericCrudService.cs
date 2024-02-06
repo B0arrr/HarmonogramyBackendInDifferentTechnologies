@@ -22,11 +22,11 @@ public class GenericCrudService<TModel, TDto>(IContext dbContext, IMapper mapper
         return mapper.Map<IEnumerable<TDto>>(entities);
     }
 
-    public async Task<TDto?> GetById(Expression<Func<TModel, bool>> predicateToGetId, params string[] includes)
+    public async Task<TDto?> GetBy(Expression<Func<TModel, bool>> predicate, params string[] includes)
     {
         var query = ApplyIncludes(dbContext.Set<TModel>(), includes);
 
-        var entity = await dbContext.Set<TModel>().FirstOrDefaultAsync(predicateToGetId);
+        var entity = await dbContext.Set<TModel>().FirstOrDefaultAsync(predicate);
         return entity == null ? null : mapper.Map<TDto>(entity);
     }
 

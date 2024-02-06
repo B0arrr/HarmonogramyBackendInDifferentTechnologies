@@ -10,5 +10,13 @@ public class MappingProfile: Profile
     {
         CreateMap<Company, CompanyDto>();
         CreateMap<CompanyDto, Company>();
+        CreateMap<Employment, EmploymentDto>();
+        CreateMap<EmploymentDto, Employment>();
+        CreateMap<Position, PositionDto>();
+        CreateMap<PositionDto, Position>();
+        CreateMap<ScheduleUser, ScheduleUserDto>();
+        CreateMap<ScheduleUserDto, ScheduleUser>();
+        CreateMap<User, UserDto>();
+        CreateMap<UserDto, User>();
     }
 }
